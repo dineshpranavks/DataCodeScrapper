@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Dataset Explorer{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold text-primary mb-3">AtCoder Dataset Explorer</h1>
+            <p class="lead text-muted">Browse, search, and analyze classified competitive programming problems.</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card stat-card shadow-sm h-100 border-0 bg-primary text-white">
+                <div class="card-body text-center d-flex flex-column justify-content-center py-5">
+                    <h5 class="card-title text-uppercase fw-bold mb-3">Total Contests</h5>
+                    <h2 class="display-3 fw-bold mb-0">{{ stats.total_contests }}</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card stat-card shadow-sm h-100 border-0 bg-success text-white">
+                <div class="card-body text-center d-flex flex-column justify-content-center py-5">
+                    <h5 class="card-title text-uppercase fw-bold mb-3">Total Problems</h5>
+                    <h2 class="display-3 fw-bold mb-0">{{ stats.total_problems }}</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card stat-card shadow-sm h-100 border-0 bg-info text-white">
+                <div class="card-body text-center d-flex flex-column justify-content-center py-5">
+                    <h5 class="card-title text-uppercase fw-bold mb-3">Classified Problems</h5>
+                    <h2 class="display-3 fw-bold mb-0">{{ stats.classified_problems }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card stat-card shadow-sm h-100 border-0 bg-warning text-dark">
+                <div class="card-body text-center d-flex flex-column justify-content-center py-5">
+                    <h5 class="card-title text-uppercase fw-bold mb-3">XML Files Generated</h5>
+                    <!-- Using total problems as a proxy since we generate XMLs for all, or assuming from DB -->
+                    <h2 class="display-3 fw-bold mb-0">{{ stats.total_problems }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card stat-card shadow-sm h-100 border-0 bg-danger text-white">
+                <div class="card-body text-center d-flex flex-column justify-content-center py-5">
+                    <h5 class="card-title text-uppercase fw-bold mb-3">Topics Count</h5>
+                    <h2 class="display-3 fw-bold mb-0">{{ stats.topics_count }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card stat-card shadow-sm h-100 border-0 bg-secondary text-white">
+                <div class="card-body text-center d-flex flex-column justify-content-center py-5">
+                    <h5 class="card-title text-uppercase fw-bold mb-3">Average Rating</h5>
+                    <h2 class="display-3 fw-bold mb-0">{{ stats.average_rating }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <a href="{{ url_for('main.problems') }}" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow">Explore Problems</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

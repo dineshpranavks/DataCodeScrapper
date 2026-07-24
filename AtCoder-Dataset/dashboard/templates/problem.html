@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}{{ problem.title }} - Dataset Explorer{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <div>
+            <h1 class="mb-1 text-primary">{{ problem.title }}</h1>
+            <p class="text-muted mb-0">
+                <span class="badge bg-secondary me-2">{{ problem.contest_id }}</span>
+                <span class="badge bg-info me-2">{{ problem.problem_id }}</span>
+                <a href="{{ problem.problem_url }}" target="_blank" class="text-decoration-none">View on AtCoder <i class="bi bi-box-arrow-up-right"></i></a>
+            </p>
+        </div>
+        <div class="text-end">
+            {% if has_xml %}
+            <a href="{{ url_for('main.download_xml', problem_id=problem.problem_id) }}" class="btn btn-success shadow-sm rounded-pill px-4">
+                <i class="bi bi-download"></i> Download XML
+            </a>
+            {% else %}
+            <button class="btn btn-secondary shadow-sm rounded-pill px-4" disabled>
+                XML Unavailable
+            </button>
+            {% endif %}
+            <button id="copyUrlBtn" class="btn btn-outline-primary shadow-sm rounded-pill px-4 ms-2">
+                <i class="bi bi-link-45deg"></i> Copy URL
+            </button>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white fw-bold py-3 fs-5">
+                    Problem Statement
+                </div>
+                <div class="card-body">
+                    <p class="card-text" style="white-space: pre-wrap;">{{ problem.statement or 'N/A' }}</p>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white fw-bold py-3 fs-5">
+                    Constraints
+                </div>
+                <div class="card-body bg-light">
+                    <p class="card-text font-monospace mb-0" style="white-space: pre-wrap;">{{ problem.constraints or 'N/A' }}</p>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-header bg-white fw-bold py-3 fs-5">
+                            Input Format
+                        </div>
+                        <div class="card-body bg-light">
+                            <pre class="mb-0"><code>{{ problem.input_format or 'N/A' }}</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-header bg-white fw-bold py-3 fs-5">
+                            Output Format
+                        </div>
+                        <div class="card-body bg-light">
+                            <pre class="mb-0"><code>{{ problem.output_format or 'N/A' }}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-header bg-white fw-bold py-3 fs-5 d-flex justify-content-between align-items-center">
+                            <span>Sample Inputs</span>
+                            <button class="btn btn-sm btn-outline-secondary copy-code-btn">Copy</button>
+                        </div>
+                        <div class="card-body bg-dark text-light">
+                            <pre class="mb-0"><code id="sampleInputsCode">{{ problem.sample_inputs or 'N/A' }}</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-header bg-white fw-bold py-3 fs-5 d-flex justify-content-between align-items-center">
+                            <span>Sample Outputs</span>
+                            <button class="btn btn-sm btn-outline-secondary copy-code-btn">Copy</button>
+                        </div>
+                        <div class="card-body bg-dark text-light">
+                            <pre class="mb-0"><code id="sampleOutputsCode">{{ problem.sample_outputs or 'N/A' }}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Meta Info -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4 sticky-top" style="top: 80px; z-index: 1;">
+                <div class="card-header bg-primary text-white fw-bold py-3 fs-5">
+                    Metadata
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <span class="fw-bold text-muted">Topic</span>
+                            <span class="badge bg-primary rounded-pill px-3 py-2 fs-6">{{ problem.topic or 'Unclassified' }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <span class="fw-bold text-muted">Subtopic</span>
+                            <span class="badge bg-secondary rounded-pill px-3 py-2">{{ problem.subtopic or 'N/A' }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <span class="fw-bold text-muted">Difficulty</span>
+                            <span class="badge difficulty-badge {{ problem.difficulty|lower|replace(' ', '-') }} rounded-pill px-3 py-2 fs-6">{{ problem.difficulty or 'N/A' }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <span class="fw-bold text-muted">Estimated Rating</span>
+                            <span class="badge bg-dark rounded-pill px-3 py-2 fs-6">{{ problem.rating or 'N/A' }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <span class="fw-bold text-muted">Algorithm</span>
+                            <span class="text-end text-break">{{ problem.algorithm or 'N/A' }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <span class="fw-bold text-muted">Confidence</span>
+                            <span>{{ problem.confidence or 'N/A' }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <span class="fw-bold text-muted">Time Limit</span>
+                            <span>{{ problem.time_limit or 'N/A' }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <span class="fw-bold text-muted">Memory Limit</span>
+                            <span>{{ problem.memory_limit or 'N/A' }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

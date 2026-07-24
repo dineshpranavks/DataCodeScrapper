@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Statistics - Dataset Explorer{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h2 class="display-5 fw-bold text-primary">Dataset Statistics</h2>
+            <p class="text-muted">Visual analysis of the AtCoder dataset</p>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100 border-0">
+                <div class="card-header bg-white fw-bold py-3">
+                    Problems per Topic (Distribution)
+                </div>
+                <div class="card-body">
+                    <canvas id="topicPieChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100 border-0">
+                <div class="card-header bg-white fw-bold py-3">
+                    Problems per Difficulty
+                </div>
+                <div class="card-body">
+                    <canvas id="difficultyBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white fw-bold py-3">
+                    Top 10 Topics
+                </div>
+                <div class="card-body">
+                    <canvas id="topTopicsBarChart" style="max-height: 400px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
